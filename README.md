@@ -14,10 +14,9 @@ auth for GET and POST (and other) HTTP methods
 
 
 ## <a name="pkg-index">Index</a>
-* [func RandomKey() string](#RandomKey)
 * [type AuthClient](#AuthClient)
-  * [func NewAuthClient(c \*http.Client, user, pass string) \*AuthClient](#NewAuthClient)
-  * [func (c *AuthClient) Do(r \*http.Request) (\*http.Response, error)](#AuthClient.Do)
+  * [func NewAuthClient(c *http.Client, user, pass string) *AuthClient](#NewAuthClient)
+  * [func (c *AuthClient) Do(r *http.Request) (*http.Response, error)](#AuthClient.Do)
 
 
 #### <a name="pkg-files">Package files</a>
@@ -25,12 +24,6 @@ auth for GET and POST (and other) HTTP methods
 
 
 
-
-
-## <a name="RandomKey">func</a> [RandomKey](/src/target/digest.go?s=1990:2013#L78)
-``` go
-func RandomKey() string
-```
 
 
 

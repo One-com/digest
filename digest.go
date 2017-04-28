@@ -37,7 +37,7 @@ func (c *AuthClient) Do(r *http.Request) (*http.Response, error) {
 	// Copy headers
 	(*initreq).Header = (*r).Header
 
-	resp, err := c.Do(initreq)
+	resp, err := c.Client.Do(initreq)
 	if err != nil {
 		return nil, err
 	}
@@ -46,7 +46,7 @@ func (c *AuthClient) Do(r *http.Request) (*http.Response, error) {
 		// No auth necessary
 		// redo the request with the body if needed
 		if r.Method != "GET" {
-			resp, err = c.Do(r)
+			resp, err = c.Client.Do(r)
 		}
 	} else {
 
@@ -57,7 +57,7 @@ func (c *AuthClient) Do(r *http.Request) (*http.Response, error) {
 		digestParts["password"] = c.Password
 		r.Header.Set("Authorization", getDigestAuthrization(digestParts))
 
-		resp, err = c.Do(r)
+		resp, err = c.Client.Do(r)
 	}
 
 	return resp, err
