@@ -85,7 +85,7 @@ func getMD5(text string) string {
 	return hex.EncodeToString(hasher.Sum(nil))
 }
 
-func RandomKey() string {
+func randomKey() string {
 	k := make([]byte, 12)
 	for bytes := 0; bytes < len(k); {
 		n, err := rand.Read(k[bytes:])
@@ -101,7 +101,7 @@ func getDigestAuthrization(digestParts map[string]string) string {
 	ha1 := getMD5(d["username"] + ":" + d["realm"] + ":" + d["password"])
 	ha2 := getMD5(d["method"] + ":" + d["uri"])
 	nonceCount := "00000001"
-	cnonce := RandomKey()
+	cnonce := randomKey()
 	response := getMD5(fmt.Sprintf("%s:%s:%s:%s:%s:%s", ha1, d["nonce"], nonceCount, cnonce, d["qop"], ha2))
 	authorization := fmt.Sprintf(`Digest username="%s", realm="%s", nonce="%s", uri="%s", cnonce="%s", nc=%s, qop="%s", response="%s", opaque="%s", algorithm="%s"`,
 		d["username"], d["realm"], d["nonce"], d["uri"], cnonce, nonceCount, d["qop"], response, d["opaque"], d["algorithm"])
