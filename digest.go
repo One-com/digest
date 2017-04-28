@@ -22,7 +22,7 @@ type AuthClient struct {
 // NewAuthClient returns a new AuthClient instance
 func NewAuthClient(c *http.Client, user, pass string) *AuthClient {
 
-	return &AuhtClient{Client: c, User: user, Password: pass}
+	return &AuthClient{Client: c, User: user, Password: pass}
 
 }
 
