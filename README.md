@@ -15,8 +15,8 @@ auth for GET and POST (and other) HTTP methods
 
 ## <a name="pkg-index">Index</a>
 * [type AuthClient](#AuthClient)
-  * [func NewAuthClient(c \*http.Client, user, pass string) \*AuthClient](#NewAuthClient)
-  * [func (c \*AuthClient) Do(r \*http.Request) (\*http.Response, error)](#AuthClient.Do)
+  * [func NewAuthClient(c *http.Client, user, pass string) *AuthClient](#NewAuthClient)
+  * [func (c *AuthClient) Do(r *http.Request) (*http.Response, error)](#AuthClient.Do)
 
 
 #### <a name="pkg-files">Package files</a>
@@ -27,7 +27,7 @@ auth for GET and POST (and other) HTTP methods
 
 
 
-## <a name="AuthClient">type</a> [AuthClient](/src/target/digest.go?s=303:377#L6)
+## <a name="AuthClient">type</a> [AuthClient](/src/target/digest.go?s=312:386#L7)
 ``` go
 type AuthClient struct {
     *http.Client
@@ -43,17 +43,18 @@ Type AuthClient is a wrapper around http.Client
 
 
 
-### <a name="NewAuthClient">func</a> [NewAuthClient](/src/target/digest.go?s=430:495#L13)
+### <a name="NewAuthClient">func</a> [NewAuthClient](/src/target/digest.go?s=525:590#L15)
 ``` go
 func NewAuthClient(c *http.Client, user, pass string) *AuthClient
 ```
-NewAuthClient returns a new AuthClient instance
+NewAuthClient returns a new AuthClient instance. If c is nil, a new default
+client is created. Otherwise, it extends the given one
 
 
 
 
 
-### <a name="AuthClient.Do">func</a> (\*AuthClient) [Do](/src/target/digest.go?s=623:687#L20)
+### <a name="AuthClient.Do">func</a> (\*AuthClient) [Do](/src/target/digest.go?s=757:821#L25)
 ``` go
 func (c *AuthClient) Do(r *http.Request) (*http.Response, error)
 ```
