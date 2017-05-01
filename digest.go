@@ -3,6 +3,7 @@
 package digest
 
 import (
+	"bytes"
 	"crypto/md5"
 	"crypto/rand"
 	"encoding/base64"
@@ -45,17 +46,17 @@ func (c *AuthClient) Do(r *http.Request) (*http.Response, error) {
 	if resp.StatusCode != http.StatusUnauthorized {
 		// No auth necessary
 		// redo the request with the body if needed
-		if r.Method != "GET" {
+		if r.Method != "GET" || r.Body != nil {
 			resp, err = c.Client.Do(r)
 		}
 	} else {
 
-		digestParts := digestParts(resp)
+		digestParts := digestParts(r, resp)
 		digestParts["uri"] = r.URL.Path
 		digestParts["method"] = r.Method
 		digestParts["username"] = c.User
 		digestParts["password"] = c.Password
-		r.Header.Set("Authorization", getDigestAuthrization(digestParts))
+		r.Header.Set("Authorization", getDigestAuth(digestParts, r))
 
 		resp, err = c.Client.Do(r)
 	}
@@ -63,20 +64,32 @@ func (c *AuthClient) Do(r *http.Request) (*http.Response, error) {
 	return resp, err
 }
 
-func digestParts(resp *http.Response) map[string]string {
-	result := map[string]string{}
+func digestParts(req *http.Request, resp *http.Response) (res map[string]string) {
+
+	res = make(map[string]string)
+
+	// 'qop' header can be 'auth, auth-int', so need to handle that. Only use auth-int if body is not null
+
 	if len(resp.Header["Www-Authenticate"]) > 0 {
 		wantedHeaders := []string{"nonce", "realm", "qop", "algorithm", "opaque"}
 		responseHeaders := strings.Split(resp.Header["Www-Authenticate"][0], ",")
 		for _, r := range responseHeaders {
+			r = strings.TrimSpace(r)
 			for _, w := range wantedHeaders {
 				if strings.Contains(r, w) {
-					result[w] = strings.Split(r, `"`)[1]
+					res[w] = strings.Split(r, `"`)[1]
+					if w == "qop" {
+						if strings.Contains(res[w], "auth-int") && req.Body != nil {
+							res[w] = "auth-int"
+						} else if strings.Contains(res[w], "auth") {
+							res[w] = "auth"
+						}
+					}
 				}
 			}
 		}
 	}
-	return result
+	return res
 }
 
 func getMD5(text string) string {
@@ -96,14 +109,47 @@ func randomKey() string {
 	}
 	return base64.StdEncoding.EncodeToString(k)
 }
-func getDigestAuthrization(digestParts map[string]string) string {
-	d := digestParts
-	ha1 := getMD5(d["username"] + ":" + d["realm"] + ":" + d["password"])
-	ha2 := getMD5(d["method"] + ":" + d["uri"])
-	nonceCount := "00000001"
+
+func getDigestAuth(d map[string]string, r *http.Request) (auth string) {
+
+	var ha1 string
+	var ha2 string
+
 	cnonce := randomKey()
-	response := getMD5(fmt.Sprintf("%s:%s:%s:%s:%s:%s", ha1, d["nonce"], nonceCount, cnonce, d["qop"], ha2))
-	authorization := fmt.Sprintf(`Digest username="%s", realm="%s", nonce="%s", uri="%s", cnonce="%s", nc=%s, qop="%s", response="%s", opaque="%s", algorithm="%s"`,
+
+	//ha1
+	switch d["algorithm"] {
+	case "MD5":
+		ha1 = getMD5(fmt.Sprintf("%s:%s:%s", d["username"], d["realm"], d["password"]))
+	case "MD5-sess":
+		ha1 = getMD5(fmt.Sprintf("%s:%s:%s",
+			getMD5(fmt.Sprintf("%s:%s:%s", d["username"], d["realm"], d["password"])),
+			d["nonce"], cnonce))
+	}
+
+	// ha2
+	switch d["qop"] {
+	case "auth-int":
+		buf := new(bytes.Buffer)
+		buf.ReadFrom(r.Body)
+		s := buf.String()
+		ha2 = getMD5(fmt.Sprintf("%s:%s:%s", d["method"], d["uri"], getMD5(s)))
+	case "auth", "":
+		ha2 = getMD5(fmt.Sprintf("%s:%s", d["method"], d["uri"]))
+	}
+
+	var response string
+	nonceCount := 1
+
+	// determine response
+	switch d["qop"] {
+	case "auth", "auth-int":
+		response = getMD5(fmt.Sprintf("%s:%s:%08d:%s:%s:%s", ha1, d["nonce"], nonceCount, cnonce, d["qop"], ha2))
+	case "":
+		response = getMD5(fmt.Sprintf("%s:%s:%s", ha1, d["nonce"], ha2))
+	}
+
+	auth = fmt.Sprintf(`Digest username="%s", realm="%s", nonce="%s", uri="%s", cnonce="%s", nc=%08d, qop="%s", response="%s", opaque="%s", algorithm="%s"`,
 		d["username"], d["realm"], d["nonce"], d["uri"], cnonce, nonceCount, d["qop"], response, d["opaque"], d["algorithm"])
-	return authorization
+	return auth
 }
