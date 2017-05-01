@@ -15,8 +15,8 @@ auth for GET and POST (and other) HTTP methods
 
 ## <a name="pkg-index">Index</a>
 * [type AuthClient](#AuthClient)
-  * [func NewAuthClient(c *http.Client, user, pass string) *AuthClient](#NewAuthClient)
-  * [func (c *AuthClient) Do(r *http.Request) (*http.Response, error)](#AuthClient.Do)
+  * [func NewAuthClient(c \*http.Client, user, pass string) \*AuthClient](#NewAuthClient)
+  * [func (c \*AuthClient) Do(r \*http.Request) (\*http.Response, error)](#AuthClient.Do)
 
 
 #### <a name="pkg-files">Package files</a>
