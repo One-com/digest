@@ -20,11 +20,15 @@ type AuthClient struct {
 	Password string
 }
 
-// NewAuthClient returns a new AuthClient instance
+// NewAuthClient returns a new AuthClient instance. If c is nil, a new default
+// client is created. Otherwise, it extends the given one
 func NewAuthClient(c *http.Client, user, pass string) *AuthClient {
 
-	return &AuthClient{Client: c, User: user, Password: pass}
+	if c == nil {
+		c = &http.Client{}
+	}
 
+	return &AuthClient{Client: c, User: user, Password: pass}
 }
 
 //Do performs a request, and performs digeset authentication
