@@ -21,7 +21,7 @@ type AuthClient struct {
 }
 
 // NewAuthClient returns a new AuthClient instance. If c is nil, a new default
-// client is created. Otherwise, it extends the given one
+// client is created. Otherwise, it wraps the given one
 func NewAuthClient(c *http.Client, user, pass string) *AuthClient {
 
 	if c == nil {
