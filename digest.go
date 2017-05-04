@@ -34,6 +34,11 @@ func NewAuthClient(c *http.Client, user, pass string) *AuthClient {
 //Do performs a request, and performs digeset authentication
 func (c *AuthClient) Do(r *http.Request) (*http.Response, error) {
 
+	// If no user/pass is set, just wrap *http.Client
+	if c.User == "" && c.Password == "" {
+		return c.Client.Do(r)
+	}
+
 	initreq, err := http.NewRequest(r.Method, r.URL.String(), nil)
 	if err != nil {
 		return nil, err
