@@ -30,7 +30,7 @@ func NewClient(c *http.Client, Username string, Password string) *Client {
 		c = &http.Client{}
 	}
 
-	return &Client{Client: c, User: user, Password: pass}
+	return &Client{Client: c, User: Username, Password: Password}
 }
 
 // Get issues a GET to the specified URL. If the response is one of the
@@ -158,6 +158,8 @@ func (c *Client) Do(r *http.Request) (resp *http.Response, err error) {
 		return c.Client.Do(r)
 	}
 
+	// Copy the original request, except the body
+
 	initreq, err := http.NewRequest(r.Method, r.URL.String(), nil)
 	if err != nil {
 		return nil, err
@@ -172,9 +174,7 @@ func (c *Client) Do(r *http.Request) (resp *http.Response, err error) {
 	}
 
 	if resp.StatusCode != http.StatusUnauthorized {
-		// No auth necessary
-		// redo the request with the body if needed
-		if r.Method != "GET" || r.Body != nil {
+		if r.Body != nil {
 			resp, err = c.Client.Do(r)
 		}
 	} else {
