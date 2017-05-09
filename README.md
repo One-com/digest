@@ -15,7 +15,7 @@ auth for GET and POST (and other) HTTP methods
 
 ## <a name="pkg-index">Index</a>
 * [type Client](#Client)
-  * [func NewClient(c *http.Client, user, pass string) *Client](#NewClient)
+  * [func NewClient(c *http.Client, Username string, Password string) *Client](#NewClient)
   * [func (c *Client) Do(r *http.Request) (resp *http.Response, err error)](#Client.Do)
   * [func (c *Client) Get(url string) (resp *http.Response, err error)](#Client.Get)
   * [func (c *Client) Head(url string) (resp *http.Response, err error)](#Client.Head)
@@ -47,9 +47,9 @@ Type Client is a wrapper around http.Client
 
 
 
-### <a name="NewClient">func</a> [NewClient](/src/target/digest.go?s=543:600#L17)
+### <a name="NewClient">func</a> [NewClient](/src/target/digest.go?s=543:615#L17)
 ``` go
-func NewClient(c *http.Client, user, pass string) *Client
+func NewClient(c *http.Client, Username string, Password string) *Client
 ```
 NewClient returns a new digest Client instance. If c is nil, a new default
 client is created. Otherwise, it wraps the given one
@@ -58,7 +58,7 @@ client is created. Otherwise, it wraps the given one
 
 
 
-### <a name="Client.Do">func</a> (\*Client) [Do](/src/target/digest.go?s=4958:5027#L144)
+### <a name="Client.Do">func</a> (\*Client) [Do](/src/target/digest.go?s=4987:5056#L144)
 ``` go
 func (c *Client) Do(r *http.Request) (resp *http.Response, err error)
 ```
@@ -66,8 +66,8 @@ Do sends an HTTP request and returns an HTTP response, following
 policy (such as redirects, cookies, auth) as configured on the
 client.
 
-If Username and Password are specified, Do performs HTTP Digest
-authentication against the web server
+If Username and Password are specified in the client, Do performs HTTP
+Digest authentication against the web server
 
 An error is returned if caused by client policy (such as CheckRedirect), or
 failure to speak HTTP (such as a network connectivity problem). A non-2xx
@@ -99,7 +99,7 @@ automatically sets GetBody for common standard library body types.
 
 
 
-### <a name="Client.Get">func</a> (\*Client) [Get](/src/target/digest.go?s=1383:1448#L44)
+### <a name="Client.Get">func</a> (\*Client) [Get](/src/target/digest.go?s=1398:1463#L44)
 ``` go
 func (c *Client) Get(url string) (resp *http.Response, err error)
 ```
@@ -126,7 +126,7 @@ To make a request with custom headers, use http.NewRequest and Client.Do.
 
 
 
-### <a name="Client.Head">func</a> (\*Client) [Head](/src/target/digest.go?s=1877:1943#L64)
+### <a name="Client.Head">func</a> (\*Client) [Head](/src/target/digest.go?s=1892:1958#L64)
 ``` go
 func (c *Client) Head(url string) (resp *http.Response, err error)
 ```
@@ -144,7 +144,7 @@ Client's CheckRedirect function:
 
 
 
-### <a name="Client.Post">func</a> (\*Client) [Post](/src/target/digest.go?s=2395:2490#L86)
+### <a name="Client.Post">func</a> (\*Client) [Post](/src/target/digest.go?s=2410:2505#L86)
 ``` go
 func (c *Client) Post(url, contentType string, body io.Reader) (resp *http.Response, err error)
 ```
@@ -163,7 +163,7 @@ are handled.
 
 
 
-### <a name="Client.PostForm">func</a> (\*Client) [PostForm](/src/target/digest.go?s=3110:3197#L107)
+### <a name="Client.PostForm">func</a> (\*Client) [PostForm](/src/target/digest.go?s=3125:3212#L107)
 ``` go
 func (c *Client) PostForm(url string, data url.Values) (resp *http.Response, err error)
 ```

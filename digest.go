@@ -24,7 +24,7 @@ type Client struct {
 
 // NewClient returns a new digest Client instance. If c is nil, a new default
 // client is created. Otherwise, it wraps the given one
-func NewClient(c *http.Client, user, pass string) *Client {
+func NewClient(c *http.Client, Username string, Password string) *Client {
 
 	if c == nil {
 		c = &http.Client{}
@@ -122,8 +122,8 @@ func (c *Client) PostForm(url string, data url.Values) (resp *http.Response, err
 // policy (such as redirects, cookies, auth) as configured on the
 // client.
 //
-// If Username and Password are specified, Do performs HTTP Digest
-// authentication against the web server
+// If Username and Password are specified in the client, Do performs HTTP
+// Digest authentication against the web server
 //
 // An error is returned if caused by client policy (such as CheckRedirect), or
 // failure to speak HTTP (such as a network connectivity problem). A non-2xx
