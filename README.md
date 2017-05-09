@@ -7,7 +7,7 @@
 * [Index](#pkg-index)
 
 ## <a name="pkg-overview">Overview</a>
-Packlage digest provides a drop-in replacement for http.Client that supports HTTP Digest
+Package digest provides a drop-in replacement for http.Client that supports HTTP Digest
 auth for GET and POST (and other) HTTP methods
 
 
@@ -31,7 +31,7 @@ auth for GET and POST (and other) HTTP methods
 
 
 
-## <a name="Client">type</a> [Client](/src/target/digest.go?s=337:407#L9)
+## <a name="Client">type</a> [Client](/src/target/digest.go?s=336:406#L9)
 ``` go
 type Client struct {
     *http.Client
@@ -47,7 +47,7 @@ Type Client is a wrapper around http.Client
 
 
 
-### <a name="NewClient">func</a> [NewClient](/src/target/digest.go?s=543:615#L17)
+### <a name="NewClient">func</a> [NewClient](/src/target/digest.go?s=542:614#L17)
 ``` go
 func NewClient(c *http.Client, Username string, Password string) *Client
 ```
@@ -58,7 +58,7 @@ client is created. Otherwise, it wraps the given one
 
 
 
-### <a name="Client.Do">func</a> (\*Client) [Do](/src/target/digest.go?s=4985:5054#L144)
+### <a name="Client.Do">func</a> (\*Client) [Do](/src/target/digest.go?s=4984:5053#L144)
 ``` go
 func (c *Client) Do(r *http.Request) (resp *http.Response, err error)
 ```
@@ -99,7 +99,7 @@ automatically sets GetBody for common standard library body types.
 
 
 
-### <a name="Client.Get">func</a> (\*Client) [Get](/src/target/digest.go?s=1398:1463#L44)
+### <a name="Client.Get">func</a> (\*Client) [Get](/src/target/digest.go?s=1397:1462#L44)
 ``` go
 func (c *Client) Get(url string) (resp *http.Response, err error)
 ```
@@ -126,7 +126,7 @@ To make a request with custom headers, use http.NewRequest and Client.Do.
 
 
 
-### <a name="Client.Head">func</a> (\*Client) [Head](/src/target/digest.go?s=1892:1958#L64)
+### <a name="Client.Head">func</a> (\*Client) [Head](/src/target/digest.go?s=1891:1957#L64)
 ``` go
 func (c *Client) Head(url string) (resp *http.Response, err error)
 ```
@@ -144,7 +144,7 @@ Client's CheckRedirect function:
 
 
 
-### <a name="Client.Post">func</a> (\*Client) [Post](/src/target/digest.go?s=2410:2505#L86)
+### <a name="Client.Post">func</a> (\*Client) [Post](/src/target/digest.go?s=2409:2504#L86)
 ``` go
 func (c *Client) Post(url, contentType string, body io.Reader) (resp *http.Response, err error)
 ```
@@ -163,7 +163,7 @@ are handled.
 
 
 
-### <a name="Client.PostForm">func</a> (\*Client) [PostForm](/src/target/digest.go?s=3123:3210#L107)
+### <a name="Client.PostForm">func</a> (\*Client) [PostForm](/src/target/digest.go?s=3122:3209#L107)
 ``` go
 func (c *Client) PostForm(url string, data url.Values) (resp *http.Response, err error)
 ```

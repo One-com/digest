@@ -1,4 +1,4 @@
-// Packlage digest provides a drop-in replacement for http.Client that supports HTTP Digest
+// Package digest provides a drop-in replacement for http.Client that supports HTTP Digest
 // auth for GET and POST (and other) HTTP methods
 package digest
 
