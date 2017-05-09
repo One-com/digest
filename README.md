@@ -16,7 +16,7 @@ auth for GET and POST (and other) HTTP methods
 ## <a name="pkg-index">Index</a>
 * [type Client](#Client)
   * [func NewClient(c *http.Client, user, pass string) *Client](#NewClient)
-  * [func (c *Client) Do(r *http.Request) (*http.Response, error)](#Client.Do)
+  * [func (c *Client) Do(r *http.Request) (resp *http.Response, err error)](#Client.Do)
   * [func (c *Client) Get(url string) (resp *http.Response, err error)](#Client.Get)
   * [func (c *Client) Head(url string) (resp *http.Response, err error)](#Client.Head)
   * [func (c *Client) Post(url, contentType string, body io.Reader) (resp *http.Response, err error)](#Client.Post)
@@ -58,9 +58,9 @@ client is created. Otherwise, it wraps the given one
 
 
 
-### <a name="Client.Do">func</a> (\*Client) [Do](/src/target/digest.go?s=4958:5018#L144)
+### <a name="Client.Do">func</a> (\*Client) [Do](/src/target/digest.go?s=4958:5027#L144)
 ``` go
-func (c *Client) Do(r *http.Request) (*http.Response, error)
+func (c *Client) Do(r *http.Request) (resp *http.Response, err error)
 ```
 Do sends an HTTP request and returns an HTTP response, following
 policy (such as redirects, cookies, auth) as configured on the

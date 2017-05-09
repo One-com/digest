@@ -151,7 +151,7 @@ func (c *Client) PostForm(url string, data url.Values) (resp *http.Response, err
 // 307 or 308 redirect preserves the original HTTP method and body, provided
 // that the Request.GetBody function is defined.  The http.NewRequest function
 // automatically sets GetBody for common standard library body types.
-func (c *Client) Do(r *http.Request) (*http.Response, error) {
+func (c *Client) Do(r *http.Request) (resp *http.Response, err error) {
 
 	// If no user/pass is set, just wrap *http.Client
 	if c.User == "" && c.Password == "" {
@@ -166,7 +166,7 @@ func (c *Client) Do(r *http.Request) (*http.Response, error) {
 	// Copy headers
 	(*initreq).Header = (*r).Header
 
-	resp, err := c.Client.Do(initreq)
+	resp, err = c.Client.Do(initreq)
 	if err != nil {
 		return nil, err
 	}
