@@ -107,7 +107,7 @@ func (c *Client) Post(url, contentType string, body io.Reader) (resp *http.Respo
 // with data's keys and values URL-encoded as the request body.
 //
 // The Content-Type header is set to application/x-www-form-urlencoded.
-// To set other headers, use NewRequest and DefaultClient.Do.
+// To set other headers, use http.NewRequest and DefaultClient.Do.
 //
 // When err is nil, resp always contains a non-nil resp.Body.
 // Caller should close resp.Body when done reading from it.

@@ -58,7 +58,7 @@ client is created. Otherwise, it wraps the given one
 
 
 
-### <a name="Client.Do">func</a> (\*Client) [Do](/src/target/digest.go?s=4987:5056#L144)
+### <a name="Client.Do">func</a> (\*Client) [Do](/src/target/digest.go?s=4992:5061#L144)
 ``` go
 func (c *Client) Do(r *http.Request) (resp *http.Response, err error)
 ```
@@ -163,7 +163,7 @@ are handled.
 
 
 
-### <a name="Client.PostForm">func</a> (\*Client) [PostForm](/src/target/digest.go?s=3125:3212#L107)
+### <a name="Client.PostForm">func</a> (\*Client) [PostForm](/src/target/digest.go?s=3130:3217#L107)
 ``` go
 func (c *Client) PostForm(url string, data url.Values) (resp *http.Response, err error)
 ```
@@ -171,7 +171,7 @@ PostForm issues a POST to the specified URL,
 with data's keys and values URL-encoded as the request body.
 
 The Content-Type header is set to application/x-www-form-urlencoded.
-To set other headers, use NewRequest and DefaultClient.Do.
+To set other headers, use http.NewRequest and DefaultClient.Do.
 
 When err is nil, resp always contains a non-nil resp.Body.
 Caller should close resp.Body when done reading from it.
