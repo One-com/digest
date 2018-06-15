@@ -205,7 +205,12 @@ func digestParts(req *http.Request, resp *http.Response) (res map[string]string)
 			r = strings.TrimSpace(r)
 			for _, w := range wantedHeaders {
 				if strings.Contains(r, w) {
-					res[w] = strings.Split(r, `"`)[1]
+					// Some servers send the algorithm without quotes - then split at "=".
+					if strings.Contains(r, `"`) {
+						res[w] = strings.Split(r, `"`)[1]
+					} else {
+						res[w] = strings.Split(r, "=")[1]
+					}
 					if w == "qop" {
 						if strings.Contains(res[w], "auth-int") && req.Body != nil {
 							res[w] = "auth-int"
